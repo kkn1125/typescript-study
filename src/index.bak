@@ -1,0 +1,296 @@
+let decimal: number = 6;
+let hex: number = 0xf00d;
+let binary: number = 0b1010;
+let octal: number = 0o744;
+
+let color: string = "blue";
+let fullName: string = "bob string";
+let age = 35;
+
+let sentence: string = `hello, my name is ${fullName}, i'll be ${
+  age + 1
+} years old next month`;
+
+// array
+let list: number[] = [1, 2, 3];
+let list2: Array<number> = [1, 2, 3, 4, 5];
+
+// tuple
+let x: [string, number];
+
+x = ["test", 10];
+
+enum Color {
+  Red = 1,
+  Green,
+  Blue,
+}
+
+let c: Color = Color.Green;
+
+let test: any = "5";
+// test.ifItExists();
+let arrays: any[] = [1, 2, "3"];
+let arrays2: Array<any> = [3, 2, "1"];
+
+let testSure: Object = 4;
+
+function warnUser(): void {
+  console.log("This is my warning message");
+}
+
+let unusable: void = undefined;
+// unusable = null; // --strictNullChecks를 사용하지 않을 때만 가능
+
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+let someValue: any = "123123";
+
+// let strLength: number = (<string>someValue).length;
+let strLength: number = (someValue as string).length;
+console.log(strLength);
+
+function printLabel(labeledObj: { label?: string }): {
+  label?: string;
+} {
+  // console.log(labeledObj.test);
+  return labeledObj;
+}
+
+// let myObj = { size: 10, test: "Size 10 Object" };
+let myObj = { label: "test" };
+printLabel(myObj);
+
+interface Point {
+  readonly x: number; // 프로퍼티에는 readonly 변수에는 const
+  readonly y: number;
+}
+
+let p1: Point = { x: 10, y: 12 };
+
+// p1.x = 3; error!
+
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function (src: string, sub: string) {
+  let result = src.search(sub);
+
+  return result > -1;
+};
+
+mySearch = function (src, sub) {
+  let result = src.search(sub);
+
+  return result > -1;
+};
+
+interface StringArray {
+  [index: string]: string;
+}
+
+let myArray = ["bob", "freind"];
+
+let myStr: string = myArray[0];
+
+let otherArray: Array<string> = ["test"];
+
+class Animal {
+  name: string = "";
+}
+
+class Dog extends Animal {
+  breed: string = "";
+}
+
+interface NotOkay {
+  [x: number]: Animal;
+}
+
+interface NumberOrStringDictionary {
+  [index: string]: number | string;
+  length: number; // 성공, length는 숫자입니다
+  name: string; // 성공, name은 문자열입니다
+}
+
+// interface ClockInterface {
+//   currentTime: Date;
+// }
+
+// class Clock implements ClockInterface {
+//   currentTime: Date = new Date();
+//   constructor(h: number, m: number) {}
+// }
+
+// interface ClockInterface {
+//   currentTime: Date;
+//   setTime(d: Date): void;
+// }
+
+// class Clock implements ClockInterface {
+//   currentTime: Date = new Date();
+//   setTime(d: Date) {
+//       this.currentTime = d;
+//   }
+//   constructor(h: number, m: number) { }
+// }
+
+// interface ClockConstructor {
+//   new (hour: number, minute: number);
+// }
+
+// class Clock implements ClockConstructor {
+//   currentTime: Date;
+//   constructor(h: number, m: number) { }
+// }
+
+interface ClockConstructor {
+  new (hour: number, minute: number): ClockInterface;
+}
+interface ClockInterface {
+  tick(): void;
+}
+
+function createClock(
+  ctor: ClockConstructor,
+  hour: number,
+  minute: number
+): ClockInterface {
+  return new ctor(hour, minute);
+}
+
+class DigitalClock implements ClockInterface {
+  constructor(h: number, m: number) {}
+  tick() {
+    console.log("beep beep");
+  }
+  test() {}
+}
+class AnalogClock implements ClockInterface {
+  constructor(h: number, m: number) {}
+  tick() {
+    console.log("tick tock");
+  }
+}
+
+interface Shape {
+  color: string;
+}
+
+interface Square extends Shape {
+  sideLength: number;
+}
+
+let square = {} as Square;
+square.color = "blue";
+square.sideLength = 10;
+
+class Control {
+  private state: any;
+}
+
+interface SelectableControl extends Control {
+  select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+  select() {}
+}
+
+class TextBox extends Control {
+  select() {}
+}
+
+// Error: Property 'state' is missing in type 'Image'.
+class Images extends Control implements SelectableControl {
+  select() {}
+}
+
+class Locations {}
+
+// interface Card {
+//   suit: string;
+//   card: number;
+// }
+
+// interface Deck {
+//   suits: string[];
+//   cards: number[];
+//   createCardPicker(this: Deck): () => Card;
+// }
+
+// let deck = {
+//   suits: ["hearts", "spades", "clubs", "diamonds"],
+//   cards: Array(52),
+//   createCardPicker: function(this: Deck) {
+//       // NOTE: 아랫줄은 화살표 함수로써, 'this'를 이곳에서 캡처할 수 있도록 합니다
+//       return () => {
+//           let pickedCard = Math.floor(Math.random() * 52);
+//           let pickedSuit = Math.floor(pickedCard / 13);
+//           console.log(pickedCard)
+//           return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+//       }
+//   }
+// }
+
+// let cardPicker = deck.createCardPicker();
+// let pickedCard = cardPicker();
+
+// alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+// function pickCard(x): any {
+//     // 인자가 배열 또는 객체인지 확인
+//     // 만약 그렇다면, deck이 주어지고 card를 선택합니다.
+//     if (typeof x == "object") {
+//         let pickedCard = Math.floor(Math.random() * x.length);
+//         return pickedCard;
+//     }
+//     // 그렇지 않다면 그냥 card를 선택합니다.
+//     else if (typeof x == "number") {
+//         let pickedSuit = Math.floor(x / 13);
+//         return { suit: suits[pickedSuit], card: x % 13 };
+//     }
+// }
+
+function pickCard(x: { suit: string; card: number }[]): number;
+function pickCard(x: number): { suit: string; card: number };
+function pickCard(x: any): any {
+  // 인자가 배열 또는 객체인지 확인
+  // 만약 그렇다면, deck이 주어지고 card를 선택합니다.
+  if (typeof x == "object") {
+    let pickedCard = Math.floor(Math.random() * x.length);
+    return pickedCard;
+  }
+  // 그렇지 않다면 그냥 card를 선택합니다.
+  else if (typeof x == "number") {
+    let pickedSuit = Math.floor(x / 13);
+    return { suit: suits[pickedSuit], card: x % 13 };
+  }
+}
+
+let myDeck = [
+  { suit: "diamonds", card: 2 },
+  { suit: "spades", card: 10 },
+  { suit: "hearts", card: 4 },
+];
+let pickedCard1 = myDeck[pickCard(myDeck)];
+// alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+
+let pickedCard2 = pickCard(15);
+// alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
+
+function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
+  return (Math.floor(Math.random() * 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+console.log(rollDice());
+
+type NetworkLoadingState = {
+  state: "loading";
+};
